@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-
+# This is the "app" variable Uvicorn is looking for
 app = FastAPI()
 
 @app.get("/")
-aysnc def root():
-	return {"return": "ingestion app is running"}
+async def root():
+    return {"status": "online", "message": "Research Ingestion Engine Ready"}
