@@ -1,0 +1,10 @@
+{
+    "grobid_server": "https://your-grobid-space-url.hf.space",
+    "timeout": 60,
+    "coordinates": [
+        "p",
+        "s",
+        "persName",
+        "biblStruct"
+    ]
+}
