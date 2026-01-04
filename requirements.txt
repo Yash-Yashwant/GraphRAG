@@ -8,3 +8,5 @@ grobid-client-python
 torch --index-url https://download.pytorch.org/whl/cpu
 torchvision --index-url https://download.pytorch.org/whl/cpu
 numpy<2.0.0
+beautifulsoup4
+lxml

@@ -8,6 +8,8 @@ import shutil
 from marker.convert import convert_single_pdf
 from marker.models import load_all_models
 import os
+from bs4 import BeautifulSoup
+# import lxml  
 # This is the "app" variable Uvicorn is looking for
 app = FastAPI()
 models = load_all_models()
@@ -31,14 +33,19 @@ async def ingest(file: UploadFile = File(...)): # ... mean that the file is requ
             raise Exception(f"GROBID processing failed with status code{status}")
 
 
+        # Extract structured entities from XML
+        entities = extract_entities(xml_out)
+        
         # getting the text for marker from teh same temp file at temp_path
-
         full_text, image, metadata = convert_single_pdf(temp_path, models)
 
         #returning all the informtion back in teh json form
-
-
-        return {"job_id": job_id,"filename": file.filename, "metadata_xml":xml_out, "full_text": full_text}
+        return {
+            "job_id": job_id,
+            "filename": file.filename,
+            "entities": entities,      # Structured: title, authors, citations
+            "full_text": full_text     # Markdown text
+        }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -48,8 +55,29 @@ async def ingest(file: UploadFile = File(...)): # ... mean that the file is requ
             os.remove(temp_path)
     
 
+def extract_entities(xml_out):
+    soup = BeautifulSoup(xml_out, 'xml')
+    title = soup.find('titleStmt').find('title').text if soup.find('titleStmt') else "Unknown Title" 
+    authors = []
+    for author in soup.find_all('author'):
+        pers_name = author.find('persName')
+        if pers_name:
+            first = pers_name.find('forename', type='first')
+            last = pers_name.find('surname')
+            full_name = f"{first.text if first else ''} {last.text if last else ''}".strip()
+            if full_name: authors.append(full_name)
+
+        
+    citations = []
+    for cite in soup.find_all('biblStruct'):
+        c_title = cite.find('title', level='a')
+        if c_title: citations.append(c_title.text)
+
+
+    return {"title": title, "authors": authors, "citations": citations}
 
 
 
 
-
+    
+            
