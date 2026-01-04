@@ -1,6 +1,10 @@
 fastapi
 uvicorn
 python-multipart
-marker-pdf
+# Pinning to this version ensures the 'marker.convert' path exists
+marker-pdf==0.2.14 
 grobid-client-python
-pydantic
+# Force CPU versions to save space and prevent build timeouts
+torch --index-url https://download.pytorch.org/whl/cpu
+torchvision --index-url https://download.pytorch.org/whl/cpu
+numpy<2.0.0
