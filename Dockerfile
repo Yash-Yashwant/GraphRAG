@@ -3,7 +3,7 @@ FROM python:3.10-slim
 
 # 2. Install system-level tools (rarely change)
 RUN apt-get update && apt-get install -y \
-    openjdk-17-jre-headless \
+    default-jre-headless \
     build-essential \
     libmagic1 \
     && rm -rf /var/lib/apt/lists/*
