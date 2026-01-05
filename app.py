@@ -27,8 +27,17 @@ async def ingest(file: UploadFile = File(...)): # ... mean that the file is requ
             shutil.copyfileobj(file.file, buffer)
     
         client = GrobidClient(config_path="config.json")
-        _, status, xml_out = client.process_pdf("processFulltextDocument", temp_path, generateIDs=True)
-
+        _, status, xml_out = client.process_pdf(
+            "processFulltextDocument", 
+            temp_path, 
+            generateIDs=True, 
+            consolidate_header=False, 
+            consolidate_citations=False, 
+            include_raw_citations=False, 
+            include_raw_affiliations=False, 
+            tei_coordinates=False, 
+            segment_sentences=False
+        )
         if status != 200:
             raise Exception(f"GROBID processing failed with status code{status}")
 

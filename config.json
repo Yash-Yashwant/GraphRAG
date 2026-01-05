@@ -1,5 +1,5 @@
 {
-    "grobid_server": "https://your-grobid-space-url.hf.space",
+    "grobid_server": "https://kermitt2-grobid.hf.space",
     "timeout": 60,
     "coordinates": [
         "p",

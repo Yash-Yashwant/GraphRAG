@@ -1,3 +1,9 @@
 scratchpad.txt
 planning.md
 venv
+1706.03762v7.pdf    
+
+# ignore all pdf files
+*.pdf
+SYSTEM_DESIGN.md
+
