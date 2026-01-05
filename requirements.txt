@@ -1,9 +1,9 @@
 fastapi
 uvicorn
 python-multipart
-# Pin compatible versions to avoid import errors
-marker-pdf>=0.3.0
-surya-ocr>=0.6.0
+# Pinning to known working versions to avoid ImportError: cannot import name 'segformer'
+marker-pdf==0.2.14
+surya-ocr==0.4.14
 grobid-client-python
 # Force CPU versions to save space and prevent build timeouts
 torch --index-url https://download.pytorch.org/whl/cpu
