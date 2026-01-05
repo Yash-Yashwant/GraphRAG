@@ -12,3 +12,4 @@ numpy<2.0.0
 beautifulsoup4
 lxml
 opencv-python-headless
+transformers==4.44.2
