@@ -1,8 +1,9 @@
 fastapi
 uvicorn
 python-multipart
-# Pinning to this version ensures the 'marker.convert' path exists
-marker-pdf==0.2.14 
+# Pin compatible versions to avoid import errors
+marker-pdf>=0.3.0
+surya-ocr>=0.6.0
 grobid-client-python
 # Force CPU versions to save space and prevent build timeouts
 torch --index-url https://download.pytorch.org/whl/cpu
@@ -10,3 +11,4 @@ torchvision --index-url https://download.pytorch.org/whl/cpu
 numpy<2.0.0
 beautifulsoup4
 lxml
+opencv-python-headless
