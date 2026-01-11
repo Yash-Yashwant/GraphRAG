@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+python-multipart
+# Pinning to known working versions to avoid ImportError: cannot import name 'segformer'
+marker-pdf==0.2.14
