@@ -7,3 +7,9 @@ venv
 *.pdf
 SYSTEM_DESIGN.md
 
+.env
+debug_crash.py
+debug_version.py
+SYSTEM_DESIGN.md
+Planning.md
+uploadTest

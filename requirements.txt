@@ -13,3 +13,7 @@ beautifulsoup4
 lxml
 opencv-python-headless
 transformers==4.44.2
+neo4j==5.15.0
+google-generativeai
+python-dotenv
+pydantic-settings
