@@ -1,0 +1,39 @@
+# GROBID Cloud Run Service
+# Uses lightweight lfoppiano/grobid image (~300MB) - fits Cloud Run 9.9GB layer limit
+# Full grobid/grobid image (~10GB) exceeds Cloud Run limits
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: grobid-service
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      containerConcurrency: 1
+      timeoutSeconds: 300
+      containers:
+        - image: docker.io/lfoppiano/grobid:0.8.0
+          ports:
+            - containerPort: 8070
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+          startupProbe:
+            httpGet:
+              path: /api/isalive
+              port: 8070
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /api/isalive
+              port: 8070
+            initialDelaySeconds: 60
+            periodSeconds: 30
