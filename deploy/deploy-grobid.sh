@@ -18,14 +18,16 @@ echo "  Region:  $REGION"
 echo "  Image:   lfoppiano/grobid:0.8.0"
 echo ""
 
+# min-instances=1 avoids "no available instance" cold-start failures (costs ~$50/mo)
+# Use min-instances=0 to scale to zero and save cost, but expect cold-start timeouts
 gcloud run deploy "$SERVICE_NAME" \
   --image=docker.io/lfoppiano/grobid:0.8.0 \
   --platform=managed \
   --region="$REGION" \
   --port=8070 \
-  --memory=4Gi \
+  --memory=8Gi \
   --cpu=2 \
-  --min-instances=0 \
+  --min-instances=1 \
   --max-instances=10 \
   --concurrency=1 \
   --timeout=300 \

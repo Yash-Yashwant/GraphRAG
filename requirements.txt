@@ -20,3 +20,6 @@ google-generativeai
 # Utils
 python-dotenv
 pydantic-settings
+
+# pinecone
+pinecone

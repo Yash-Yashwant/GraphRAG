@@ -17,6 +17,18 @@ gcloud services enable run.googleapis.com cloudbuild.googleapis.com
 
 GROBID extracts structured metadata (title, authors, citations) from PDFs. We use the **lightweight** `lfoppiano/grobid` image (~300MB) because the full `grobid/grobid` image (~10GB) exceeds Cloud Run's 9.9GB layer limit.
 
+### Option A: GCE VM (recommended – no cold starts)
+
+```bash
+cd deploy
+chmod +x deploy-grobid-vm.sh
+./deploy-grobid-vm.sh
+```
+
+Always warm, no cold-start timeouts. Update `config.json` with `http://<VM_IP>:8070`.
+
+### Option B: Cloud Run
+
 ```bash
 cd deploy
 chmod +x deploy-grobid.sh
@@ -57,6 +69,18 @@ gcloud run services describe grobid-service --region=us-central1 --format='value
 ## 2. Deploy Marker
 
 Marker converts PDFs to Markdown. It uses ML models (surya-ocr, marker-pdf) and needs more memory.
+
+### Option A: GCE VM (recommended – no cold starts)
+
+```bash
+cd deploy
+chmod +x deploy-marker-vm.sh
+./deploy-marker-vm.sh
+```
+
+Update `config.json` with `marker_server: "http://<VM_IP>:8080"`. ML models take ~2 min to load on first request.
+
+### Option B: Cloud Run
 
 ```bash
 cd deploy

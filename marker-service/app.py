@@ -23,22 +23,29 @@ async def convert(file: UploadFile = File(...)):
     if not file.filename.endswith(".pdf"):
         raise HTTPException(status_code=400, detail="File must be a PDF")
     
-    #create a temp file and write the uploaded file to it
-
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         tmp.write(await file.read())
         temp_path = tmp.name
 
-    
     try:
         models = get_models()
         text, images, metadata = convert_single_pdf(temp_path, models)
         return {
-            "markdown": text,
-            "metadata": metadata
+            "markdown": text or "",
+            "metadata": metadata or {}
         }
+    except MemoryError as e:
+        raise HTTPException(
+            status_code=507,
+            detail=f"Out of memory. Use VM with more RAM (32GB+). {str(e)}"
+        )
+    except Exception as e:
+        import traceback
+        err_detail = f"{type(e).__name__}: {str(e)}\n{traceback.format_exc()[:800]}"
+        raise HTTPException(status_code=500, detail=err_detail)
     finally:
-        os.unlink(temp_path)
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)
 
 
 @app.get("/health")

@@ -15,7 +15,8 @@ class Neo4jService:
     
     def __init__(self):
         self.uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-        self.user = os.getenv("NEO4J_USER", "neo4j")
+        # Aura uses NEO4J_USERNAME; fallback to NEO4J_USER
+        self.user = os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME", "neo4j")
         self.password = os.getenv("NEO4J_PASSWORD", "password")
         self.driver = None
     

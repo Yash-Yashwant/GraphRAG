@@ -1,6 +1,7 @@
 {
-    "grobid_server": "https://grobid-service-689943598666.us-central1.run.app",
-    "timeout": 60,
+    "grobid_server": "http://35.202.42.191:8070",
+    "marker_server": "http://130.211.209.28:8080",
+    "timeout": 180,
     "coordinates": [
         "p",
         "s",
