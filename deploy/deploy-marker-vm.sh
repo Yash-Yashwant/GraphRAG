@@ -61,6 +61,13 @@ if gcloud compute instances describe "$VM_NAME" --zone="$ZONE" --project="$PROJE
   gcloud compute instances delete "$VM_NAME" --zone="$ZONE" --project="$PROJECT_ID" --quiet
 fi
 
+# Use static IP if reserved (run reserve-static-ips.sh first)
+ADDRESS_ARG=""
+if gcloud compute addresses describe marker-ip --region=us-central1 --project="$PROJECT_ID" &>/dev/null; then
+  ADDRESS_ARG="--address=marker-ip"
+  echo "Using static IP marker-ip"
+fi
+
 echo "Creating VM (Marker needs ~2 min to load ML models)..."
 gcloud compute instances create "$VM_NAME" \
   --project="$PROJECT_ID" \
@@ -70,6 +77,7 @@ gcloud compute instances create "$VM_NAME" \
   --image-project=ubuntu-os-cloud \
   --boot-disk-size=50GB \
   --scopes=cloud-platform \
+  $ADDRESS_ARG \
   --metadata-from-file=startup-script="$STARTUP_FILE"
 
 rm -f "$STARTUP_FILE"
